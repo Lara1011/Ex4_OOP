@@ -44,7 +44,7 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
-    def load_pokemons(self, file_name: str):
+    def load_pokemons(self, file_name):
         data = json.load(file_name)
         for pokemon in data["Pokemons"]:
             value = pokemon["Pokemon"]["value"]
@@ -56,7 +56,7 @@ class GraphAlgo(GraphAlgoInterface):
             pokemon = Pokemon(value, type, pos)
             self.graph.add_pokemon(pokemon)
 
-    def load_agents(self, file_name: str):
+    def load_agents(self, file_name):
         data = json.load(file_name)
         for agent in data["Agents"]:
             id = agent["Agents"]["id"]
@@ -70,6 +70,12 @@ class GraphAlgo(GraphAlgoInterface):
                 pos = (random.uniform(35.19, 35.20), random.uniform(32.09, 32.109))
             agent = Agent(id, value, src, dest, speed, pos)
             self.graph.add_agent(agent)
+
+    def get_agent(self):
+        return self.graph.Agents
+
+    def get_pokemon(self):
+        return self.graph.Pokemons
 
     def save_to_json(self, file_name: str) -> bool:
         dicty = {"Edges": [], "Nodes": []}
@@ -153,13 +159,12 @@ class GraphAlgo(GraphAlgoInterface):
             srcX = self.graph.Nodes[edge.getSrc()].getx()
             srcY = self.graph.Nodes[edge.getSrc()].gety()
             Edge = math.sqrt(math.pow(srcX - destX, 2) + math.pow(srcY - destY, 2))
-            SrcToPokemon = math.sqrt(math.pow(srcX - pokemon[0], 2) + math.pow(srcY - pokemon.pos[1], 2))
+            SrcToPokemon = math.sqrt(math.pow(srcX - pokemon.pos[0], 2) + math.pow(srcY - pokemon.pos[1], 2))
             PokemonToDest = math.sqrt(math.pow(destX - pokemon.pos[0], 2) + math.pow(destY - pokemon.pos[1], 2))
             if Edge + 0.0000001 >= SrcToPokemon + PokemonToDest:
-                if (edge.getSrc() > edge.getDest() and pokemon.type > 0) or (edge.getSrc() < edge.getDest() and pokemon.type < 0):
-                    w1 = edge.getWeight() * (SrcToPokemon / Edge)
-                    w2 = edge.getWeight() - w1
-                    return edge, w1, w2
+                if (edge.getSrc() > edge.getDest() and pokemon.type > 0) or (
+                        edge.getSrc() < edge.getDest() and pokemon.type < 0):
+                    return edge
         return ()
 
     def plot_graph(self) -> None:

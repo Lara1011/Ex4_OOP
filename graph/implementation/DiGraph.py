@@ -103,6 +103,5 @@ class DiGraph(GraphInterface):
         self.Agents[agent.id] = agent
         self.MC = self.MC + 1
 
-
     def __repr__(self):
         return f"Graph: |V|={self.v_size()}, |E|={self.e_size()}"
