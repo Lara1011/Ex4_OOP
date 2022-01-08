@@ -6,6 +6,8 @@ class Agent:
         self.dest = dest
         self.speed = speed
         self.pos = pos
+        self.pokemon_list = []
+        self.path_list = []
 
     def get_id(self):
         return self.id
@@ -42,3 +44,15 @@ class Agent:
 
     def set_pos(self, p):
         self.pos = p
+
+    def get_pokemon_list(self):
+        return self.pokemon_list
+
+    def add_to_pokemon_list(self, pokemon):
+        self.pokemon_list.append(pokemon)
+
+    def get_path(self):
+        return self.path_list
+
+    def set_path(self, tsp):
+        self.path_list = tsp
