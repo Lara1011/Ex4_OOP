@@ -11,8 +11,14 @@ pygame.init()
 SCREEN = pygame.display.set_mode((1270, 720))
 pygame.display.set_caption("Menu")
 BACKGROUD_PIC = pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
-POK_SURF = pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
-AGENT_SURF = pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
+BIG_POKEMON_SURF = pygame.image.load(
+    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
+SMALL_POKEMON_SURF = pygame.image.load(
+    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu.png").convert_alpha()
+BIG_AGENT_SURF = pygame.image.load(
+    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\KantoashBIG.png").convert_alpha()
+SMALL_AGENT_SURF = pygame.image.load(
+    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
 
 CLOCK = pygame.time.Clock()
 
@@ -123,12 +129,9 @@ def main_menu():
     while True:
 
         SCREEN.blit(BACKGROUD_PIC, (0, 0))
-        SCREEN.blit(POK_SURF, (750, 200))
-        SCREEN.blit(AGENT_SURF, (200, 300))
-        img = Image.open("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").resize((30, 30),
-                                                                                                        Image.ANTIALIAS)
-        img.save("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu1.png")
-        SCREEN.blit(pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu1.png").convert_alpha(), (550, 200))
+        SCREEN.blit(BIG_POKEMON_SURF, (750, 200))
+        SCREEN.blit(BIG_AGENT_SURF, (200, 300))
+
         MENU_MOUSE_POS = pygame.mouse.get_pos()
         MENU_TEXT = get_font(100).render("MAIN MENU", True, "#d7fcf4")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 130))
@@ -137,11 +140,7 @@ def main_menu():
             image=pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Play Rect.png"),
             pos=(640, 350), text_input="PLAY",
             font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        # OPTIONS_BUTTON = UI.ButtonsUI.ButtonUI(
-        #     image=pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Options Rect.png"),
-        #     pos=(640, 400),
-        #     text_input="OPTIONS",
-        #     font=get_font(75), base_color="#d7fcd4", hovering_color="White")
+
         QUIT_BUTTON = UI.ButtonsUI.ButtonUI(
             image=pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Quit Rect.png"),
             pos=(640, 550),
@@ -161,8 +160,6 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     play()
-                # if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                #     options()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
@@ -193,12 +190,14 @@ def draw_edge(Graph: GraphAlgo):
         SCREEN.blit(weight_surf, rect)
 
 
-def draw_pokemon():
-    SCREEN.blit(POK_SURF, (200, 200))
+def draw_pokemon(Graph: GraphAlgo):
+    for pokemon in Graph.get_pokemon().values():
+        SCREEN.blit(SMALL_POKEMON_SURF, (pokemon.pos[0], pokemon.pos[1]))
 
 
-def draw_agent():
-    SCREEN.blit(AGENT_SURF, (20, 20))
+def draw_agent(Graph: GraphAlgo):
+    for agent in Graph.get_agent().values():
+        SCREEN.blit(SMALL_AGENT_SURF, (agent.pos[0], agent.pos[1]))
 
 
 def display_while_run():
