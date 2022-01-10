@@ -2,7 +2,7 @@ import math
 import sys
 
 import pygame
-from pygame import gfxdraw
+from pygame import gfxdraw, display
 from graph.implementation.GraphAlgo import GraphAlgo
 import UI.ButtonsUI
 from UI.ButtonsUI import ButtonUI
@@ -11,11 +11,16 @@ import time
 
 class GameUI:
 
-    def __init__(self, graph):
+    def __init__(self, graph, client):
         self.graph = graph
         pygame.init()
         self.SCREEN = pygame.display.set_mode((1270, 720))
         pygame.display.set_caption("Menu")
+        self.client = client
+        self.min_x = min(list(graph.Nodes.values()), key=lambda n: n.x).x
+        self.min_y = min(list(graph.Nodes.values()), key=lambda n: n.y).y
+        self.max_x = max(list(graph.Nodes.values()), key=lambda n: n.x).x
+        self.max_y = max(list(graph.Nodes.values()), key=lambda n: n.y).y
 
         # self.BACKGROUD_PIC = pygame.image.load(
         #    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
@@ -53,11 +58,11 @@ class GameUI:
                 self.main_display_while_playing(math.ceil(t_end - time.time()))
                 self.display_while_playing()
 
-
                 # SCREEN.blit(BACKGROUD_PIC, (0, 0))
 
                 STOP_BUTTON = ButtonUI(image=None, pos=(100, 680),
-                                       text_input="stop", font=self.get_font(30), base_color="red", hovering_color="white")
+                                       text_input="stop", font=self.get_font(30), base_color="red",
+                                       hovering_color="white")
 
                 STOP_BUTTON.changeColor(PLAY_MOUSE_POS)
                 STOP_BUTTON.update(self.SCREEN)
@@ -68,8 +73,10 @@ class GameUI:
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if STOP_BUTTON.checkForInput(PLAY_MOUSE_POS):
+                            self.client.stop()
                             self.main_menu()
                 pygame.display.update()
+            self.client.stop()
             self.GAME_FINISHED()
 
     def GAME_FINISHED(self):
@@ -88,7 +95,8 @@ class GameUI:
             self.SCREEN.blit(Score_TEXT, Score_RECT)
 
             OPTIONS_BACK = ButtonUI(image=None, pos=(640, 560),
-                                    text_input="BACK", font=self.get_font(75), base_color="Black", hovering_color="Green")
+                                    text_input="BACK", font=self.get_font(75), base_color="Black",
+                                    hovering_color="Green")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.SCREEN)
@@ -100,8 +108,7 @@ class GameUI:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         self.main_menu()
-
-            pygame.display.update()
+            display.update()
 
     def main_menu(self):
         pygame.display.set_caption("Menu")
@@ -148,23 +155,24 @@ class GameUI:
 
     def draw_node(self):
         for node in self.graph.Nodes.values():
-            x = node.getx()
-            y = node.gety()
-            gfxdraw.circle(self.SCREEN, int(x), int(y), 15, (13,45,234))
-            id_surf = self.get_font(100).render(str(node.id), True, "white")
+            print(node.getx)
+            x = self.my_scale(node.getx(), x=True)
+            y = self.my_scale(node.gety(), y=True)
+            gfxdraw.circle(self.SCREEN, int(x), int(y), 15, (13, 45, 234))
+            id_surf = self.get_font(10).render(str(node.id), True, "white")
             id_rect = id_surf.get_rect(center=(x, y))
             self.SCREEN.blit(id_surf, id_rect)
-            self.SCREEN.blit(self.BIG_POKEMON_SURF, (0,0))
+            self.SCREEN.blit(self.BIG_POKEMON_SURF, (0, 0))
 
     def draw_edge(self):
         for edge in self.graph.Edges.values():
-            srcX = self.graph.Nodes[edge.getSrc()].getx()
-            srcY = self.graph.Nodes[edge.getSrc()].gety()
-            destX = self.graph.Nodes[edge.getDest()].getx()
-            destY = self.graph.Nodes[edge.getDest()].gety()
-            gfxdraw.line(self.SCREEN, int(srcX), int(srcY), int(destX), int(destY), (67,228,11))
-#"#d7fcf4"
-            weight_surf = self.get_font(100).render(str(edge.getWeight()), True, "white")
+            srcX = self.my_scale(self.graph.Nodes[edge.getSrc()].getx(), x=True)
+            srcY = self.my_scale(self.graph.Nodes[edge.getSrc()].gety(), y=True)
+            destX = self.my_scale(self.graph.Nodes[edge.getDest()].getx(), x=True)
+            destY = self.my_scale(self.graph.Nodes[edge.getDest()].gety(), y=True)
+            gfxdraw.line(self.SCREEN, int(srcX), int(srcY), int(destX), int(destY), (67, 228, 11))
+            # "#d7fcf4"
+            weight_surf = self.get_font(10).render(str(float("{0:.3f}".format(edge.getWeight()))), True, "white")
             weight_rect = weight_surf.get_rect(center=((srcX + destX) / 2, (srcY + destY) / 2))
             self.SCREEN.blit(weight_surf, weight_rect)
 
@@ -205,5 +213,13 @@ class GameUI:
     def set_graph(self, Graph):
         self.graph = Graph
 
+    def scale(self, data, min_screen, max_screen, min_data, max_data):
+        return ((data - min_data) / (max_data - min_data)) * (max_screen - min_screen) + min_screen
 
+    # decorate scale with the correct values
 
+    def my_scale(self, data: float, x=False, y=False):
+        if x:
+            return self.scale(data, 50, self.SCREEN.get_width() - 50, self.min_x, self.max_x)
+        if y:
+            return self.scale(data, 50, self.SCREEN.get_height() - 50, self.min_y, self.max_y)

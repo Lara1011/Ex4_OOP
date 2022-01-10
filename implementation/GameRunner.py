@@ -27,23 +27,32 @@ def main():
     game_builder.get_game_info()
     game_builder.load_all()
     graph = game_builder.Client.get_graph()
+
     print("###")
     print(game_builder.GraphAlgo.graph.Edges.values())
     print(game_builder.GraphAlgo.graph.Nodes.values())
     print(game_builder.GraphAlgo.graph.Pokemons.values())
     print(game_builder.GraphAlgo.graph.Agents.values())
     print("###")
-    game_UI = GameUI(graph)
+    game_builder.start_game()
+    game_builder.load_all()
+    graph = game_builder.get_graph()
+    client = game_builder.Client
+    game_UI = GameUI(graph, client)
     screen = game_UI.SCREEN
     print(graph)
-    client = game_builder.Client
-    game_builder.start_game()
+
+    min_x = min(list(graph.Nodes.values()), key=lambda n: n.x)
+    min_y = min(list(graph.Nodes.values()), key=lambda n: n.y)
+    max_x = max(list(graph.Nodes.values()), key=lambda n: n.x)
+    max_y = max(list(graph.Nodes.values()), key=lambda n: n.y)
 
     game_info = ""
     while client.is_running() == 'true':
         game_builder.load_all()
         graph = game_builder.get_graph()
         game_UI.set_graph(graph)
+        game_builder.create_proportion_mapping()
         game_UI.play()
         game_builder.move_agent()
         game_info = client.get_info()

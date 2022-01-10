@@ -13,8 +13,26 @@ class GameBuilder:
         self.Client = Client()
         self.GraphAlgo = GraphAlgo()
 
+    def create_proportion_mapping(self):
+        """
+        Used when scaling the nodes.
+        Find min and max values of node positions.
+        """
+        graph_proportions = {}
+        min_x = min_y = float("inf")
+        max_x = max_y = float("-inf")
+        for node in self.GraphAlgo.graph.Nodes.values():
+            node_x, node_y = node.getx(), node.gety()
+            min_x = min(min_x, node_x)
+            min_y = min(min_y, node_y)
+            max_x = max(max_x, node_x)
+            max_y = max(max_y, node_y)
+        graph_proportions["x_proportions"] = (min_x, max_x)
+        graph_proportions["y_proportions"] = (min_y, max_y)
+        return (max_x, max_y)
+
     # def call_agent(self):
-    #     GraphAlgo.load_agents(Client.get_agents())
+    # GraphAlgo.load_agents(Client.get_agents())
     def load_all(self):
         self.GraphAlgo.load_graph(self.Client.get_graph())
         self.GraphAlgo.load_agents(self.Client.get_agents())
