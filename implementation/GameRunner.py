@@ -4,7 +4,7 @@ from graph.implementation.GraphAlgo import GraphAlgo
 from implementation.GameBuilder import GameBuilder
 import pygame
 from pygame import display
-from UI import GameUI
+from UI.GameUI import GameUI
 
 from graph.implementation.DiGraph import DiGraph
 
@@ -13,13 +13,14 @@ PORT = 6666
 # server host (default localhost 127.0.0.1)
 HOST = '127.0.0.1'
 
-def main(self):
+
+def main():
     game_builder = GameBuilder()
-    game_builder.Client.start_connection()
-    screen = GameUI.SCREEN
+    game_builder.Client.start_connection(HOST, PORT)
     GameBuilder.get_game_info()
-    global global_graph
-    global_graph = game_builder.get_graph()
+    graph = game_builder.get_graph()
+    game_UI = GameUI(graph)
+    screen = game_UI.SCREEN
 
     game_ui = GameUI.main_menu()
     client = game_builder.Client
@@ -27,7 +28,13 @@ def main(self):
 
     game_info = ""
     while game_builder.Client.is_running() == 'true':
-        GameUI.draw_node(graph)
-        GameUI.draw_edge(graph)
-        GameUI.draw_agent(graph)
-        GameUI.draw_pokemon(graph)
+        game_builder.load_all()
+        game_UI.main_menu()
+        game_builder.move_agent()
+        game_info = game_builder.Client.get_info()
+        game_builder.get_game_info()
+    print(game_info)
+
+
+if __name__ == '__main__':
+    main()

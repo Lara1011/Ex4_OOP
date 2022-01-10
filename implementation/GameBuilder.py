@@ -12,25 +12,26 @@ class GameBuilder:
     def __init__(self):
         self.Client = Client()
         self.GraphAlgo = GraphAlgo()
-        GraphAlgo.load_from_json(Client.get_graph())
-        GraphAlgo.load_agents(Client.get_agents())
-        GraphAlgo.load_pokemons(Client.get_pokemons())
 
     # def call_agent(self):
     #     GraphAlgo.load_agents(Client.get_agents())
+    def load_all(self):
+        self.GraphAlgo.load_from_json(self.Client.get_graph())
+        self.GraphAlgo.load_agents(self.Client.get_agents())
+        self.GraphAlgo.load_pokemons(self.Client.get_pokemons())
 
     def move_agent(self):
-        Client.move()
-        GraphAlgo.load_from_json(Client.get_graph())
-        GraphAlgo.load_agents(Client.get_agents())
-        GraphAlgo.load_pokemons(Client.get_pokemons())
+        self.Client.move()
+        self.GraphAlgo.load_from_json(self.Client.get_graph())
+        self.GraphAlgo.load_agents(self.Client.get_agents())
+        self.GraphAlgo.load_pokemons(self.Client.get_pokemons())
         self.match_pokemon_to_agent()
         self.next_dest()
 
     def next_dest(self):
         for agent in self.GraphAlgo.get_agent().values():
             dest = agent.get_path().pop(0)
-            Client.choose_next_edge(("{\"agent_id\":" + agent.id + ", \"next_node_id\": " + dest + "}"))
+            self.Client.choose_next_edge(("{\"agent_id\":" + agent.id + ", \"next_node_id\": " + dest + "}"))
 
     def get_game_info(self):
         try:
