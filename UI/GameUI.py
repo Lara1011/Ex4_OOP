@@ -11,26 +11,33 @@ import time
 
 class GameUI:
 
-    def __init__(self, graph: GraphAlgo):
-        self.graph = graph.graph
+    def __init__(self, graph):
+        self.graph = graph
         pygame.init()
         self.SCREEN = pygame.display.set_mode((1270, 720))
         pygame.display.set_caption("Menu")
-        self.BACKGROUD_PIC = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
-        self.BIG_POKEMON_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
-        self.SMALL_POKEMON_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu.png").convert_alpha()
-        self.BIG_AGENT_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\KantoashBIG.png").convert_alpha()
-        self.SMALL_AGENT_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
+
+        # self.BACKGROUD_PIC = pygame.image.load(
+        #    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
+        # self.BIG_POKEMON_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
+        # self.SMALL_POKEMON_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu.png").convert_alpha()
+        # self.BIG_AGENT_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\KantoashBIG.png").convert_alpha()
+        # self.SMALL_AGENT_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
+
+        self.BACKGROUD_PIC = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/menuBackGround.png")
+        self.BIG_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachuBig.png")
+        self.SMALL_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachu.png")
+        self.BIG_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/KantoashBIG.png")
+        self.SMALL_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/Kantoash.png")
 
         self.CLOCK = pygame.time.Clock()
 
     def get_font(self, size):  # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\font.ttf", size)
+        return pygame.font.Font("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/font.ttf", size)
 
     def play(self):
         t_end = time.time() + 120
@@ -45,6 +52,7 @@ class GameUI:
                 self.SCREEN.fill("#003366")
                 self.main_display_while_playing(math.ceil(t_end - time.time()))
                 self.display_while_playing()
+
 
                 # SCREEN.blit(BACKGROUD_PIC, (0, 0))
 
@@ -61,7 +69,6 @@ class GameUI:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if STOP_BUTTON.checkForInput(PLAY_MOUSE_POS):
                             self.main_menu()
-                print(time.time())
                 pygame.display.update()
             self.GAME_FINISHED()
 
@@ -110,12 +117,12 @@ class GameUI:
             MENU_RECT = MENU_TEXT.get_rect(center=(640, 130))
 
             PLAY_BUTTON = UI.ButtonsUI.ButtonUI(
-                image=pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Play Rect.png"),
+                image=pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/Play Rect.png"),
                 pos=(640, 350), text_input="PLAY",
                 font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
 
             QUIT_BUTTON = UI.ButtonsUI.ButtonUI(
-                image=pygame.image.load("C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Quit Rect.png"),
+                image=pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/Quit Rect.png"),
                 pos=(640, 550),
                 text_input="QUIT",
                 font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
@@ -143,30 +150,33 @@ class GameUI:
         for node in self.graph.Nodes.values():
             x = node.getx()
             y = node.gety()
-            gfxdraw.circle(self.SCREEN, x, y, 15, "#d7fcf4")
+            gfxdraw.circle(self.SCREEN, int(x), int(y), 15, (13,45,234))
             id_surf = self.get_font(100).render(str(node.id), True, "white")
             id_rect = id_surf.get_rect(center=(x, y))
             self.SCREEN.blit(id_surf, id_rect)
+            self.SCREEN.blit(self.BIG_POKEMON_SURF, (0,0))
 
     def draw_edge(self):
         for edge in self.graph.Edges.values():
-            srcX = edge.getSrc().getx()
-            srcY = edge.getSrc().gety()
-            destX = edge.getDest().getx()
-            destY = edge.getDest().gety()
-            gfxdraw.line(self.SCREEN, srcX, srcY, destX, destY, "#d7fcf4")
-
+            srcX = self.graph.Nodes[edge.getSrc()].getx()
+            srcY = self.graph.Nodes[edge.getSrc()].gety()
+            destX = self.graph.Nodes[edge.getDest()].getx()
+            destY = self.graph.Nodes[edge.getDest()].gety()
+            gfxdraw.line(self.SCREEN, int(srcX), int(srcY), int(destX), int(destY), (67,228,11))
+#"#d7fcf4"
             weight_surf = self.get_font(100).render(str(edge.getWeight()), True, "white")
             weight_rect = weight_surf.get_rect(center=((srcX + destX) / 2, (srcY + destY) / 2))
             self.SCREEN.blit(weight_surf, weight_rect)
 
     def draw_pokemon(self):
         for pokemon in self.graph.Pokemons.values():
-            self.SCREEN.blit(self.SMALL_POKEMON_SURF, (pokemon.pos[0], pokemon.pos[1]))
+            x, y, _ = pokemon.pos.split(',')
+            self.SCREEN.blit(self.SMALL_POKEMON_SURF, (float(x), float(y)))
 
     def draw_agent(self):
         for agent in self.graph.Agents.values():
-            self.SCREEN.blit(self.SMALL_AGENT_SURF, (agent.pos[0], agent.pos[1]))
+            x, y, _ = agent.pos.split(',')
+            self.SCREEN.blit(self.SMALL_AGENT_SURF, (float(x), float(y)))
 
     def main_display_while_playing(self, Time):
         SCORE_TEXT = self.get_font(18).render("Score: ", True, "red")
@@ -184,9 +194,9 @@ class GameUI:
         self.SCREEN.blit(MOVES_TEXT, MOVES_RECT)
 
     def display_while_playing(self):
-        display_surf = pygame.Surface((1250, 620))
-        display_surf.fill("black")
-        self.SCREEN.blit(display_surf, (10, 40))
+        # display_surf = pygame.Surface((1250, 620))
+        # display_surf.fill("black")
+        # self.SCREEN.blit(display_surf, (10, 40))
         self.draw_node()
         self.draw_edge()
         self.draw_pokemon()

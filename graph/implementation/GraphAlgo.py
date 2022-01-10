@@ -44,8 +44,22 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
+    def load_graph(self, file_name):
+        data = json.loads(file_name)
+        for currNode in data["Nodes"]:
+            if "pos" in currNode:
+                strg = cast(string, currNode["pos"])
+                splitString = strg.split(',')
+                self.graph.add_node(currNode["id"],
+                                    (float(splitString[0]), float(splitString[1]), float(splitString[2])))
+            else:
+                self.graph.add_node(currNode["id"])
+        for currEdge in data["Edges"]:
+            self.graph.add_edge(currEdge["src"], currEdge["dest"], currEdge["w"])
+        return True
+
     def load_pokemons(self, file_name):
-        data = json.load(file_name)
+        data = json.loads(file_name)
         for pokemon in data["Pokemons"]:
             value = pokemon["Pokemon"]["value"]
             type = pokemon["Pokemon"]["type"]
@@ -57,15 +71,15 @@ class GraphAlgo(GraphAlgoInterface):
             self.graph.add_pokemon(pokemon)
 
     def load_agents(self, file_name):
-        data = json.load(file_name)
+        data = json.loads(file_name)
         for agent in data["Agents"]:
-            id = agent["Agents"]["id"]
-            value = agent["Agents"]["value"]
-            src = agent["Agents"]["src"]
-            dest = agent["Agents"]["dest"]
-            speed = agent["Agents"]["speed"]
+            id = agent["Agent"]["id"]
+            value = agent["Agent"]["value"]
+            src = agent["Agent"]["src"]
+            dest = agent["Agent"]["dest"]
+            speed = agent["Agent"]["speed"]
             try:
-                pos = agent["Agents"]["pos"]
+                pos = agent["Agent"]["pos"]
             except:
                 pos = (random.uniform(35.19, 35.20), random.uniform(32.09, 32.109))
             agent = Agent(id, value, src, dest, speed, pos)

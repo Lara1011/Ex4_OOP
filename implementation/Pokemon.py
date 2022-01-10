@@ -22,3 +22,10 @@ class Pokemon:
 
     def set_pos(self, p):
         self.pos = p
+
+    def __repr__(self):
+        t = str(self.type)
+        v = str(self.value)
+        g1 = str(self.pos[0])
+        g2 = str(self.pos[1])
+        return "Pokemon= type: " + t + " value: " + v + " pos: (" + g1 + "," + g2 +")"

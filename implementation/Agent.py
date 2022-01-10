@@ -56,3 +56,4 @@ class Agent:
 
     def set_path(self, tsp):
         self.path_list = tsp
+

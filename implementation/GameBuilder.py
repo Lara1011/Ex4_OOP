@@ -16,7 +16,7 @@ class GameBuilder:
     # def call_agent(self):
     #     GraphAlgo.load_agents(Client.get_agents())
     def load_all(self):
-        self.GraphAlgo.load_from_json(self.Client.get_graph())
+        self.GraphAlgo.load_graph(self.Client.get_graph())
         self.GraphAlgo.load_agents(self.Client.get_agents())
         self.GraphAlgo.load_pokemons(self.Client.get_pokemons())
 

@@ -17,24 +17,40 @@ HOST = '127.0.0.1'
 def main():
     game_builder = GameBuilder()
     game_builder.Client.start_connection(HOST, PORT)
-    GameBuilder.get_game_info()
-    graph = game_builder.get_graph()
+    nc = game_builder.GraphAlgo.centerPoint()
+    c_id = nc[0]
+    center_text = "{\"id\":" + str(c_id) + "}"
+    game_builder.Client.add_agent(center_text)
+    game_builder.Client.add_agent(center_text)
+    game_builder.Client.add_agent(center_text)
+    game_builder.Client.add_agent(center_text)
+    game_builder.get_game_info()
+    game_builder.load_all()
+    graph = game_builder.Client.get_graph()
+    print("###")
+    print(game_builder.GraphAlgo.graph.Edges.values())
+    print(game_builder.GraphAlgo.graph.Nodes.values())
+    print(game_builder.GraphAlgo.graph.Pokemons.values())
+    print(game_builder.GraphAlgo.graph.Agents.values())
+    print("###")
     game_UI = GameUI(graph)
     screen = game_UI.SCREEN
-
-    game_ui = GameUI.main_menu()
+    print(graph)
     client = game_builder.Client
     game_builder.start_game()
 
     game_info = ""
-    while game_builder.Client.is_running() == 'true':
+    while client.is_running() == 'true':
         game_builder.load_all()
-        game_UI.main_menu()
+        graph = game_builder.get_graph()
+        game_UI.set_graph(graph)
+        game_UI.play()
         game_builder.move_agent()
-        game_info = game_builder.Client.get_info()
+        game_info = client.get_info()
         game_builder.get_game_info()
-    print(game_info)
-
+        game_UI.draw_node()
+        print(game_info)
+    game_builder.Client.stop_connection()
 
 if __name__ == '__main__':
     main()
