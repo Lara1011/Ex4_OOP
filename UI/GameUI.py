@@ -1,11 +1,13 @@
+import math
 import sys
+
 import pygame
-from PIL import Image
 from matplotlib.font_manager import get_font
 from pygame import gfxdraw
 from graph.implementation.GraphAlgo import GraphAlgo
 import UI.ButtonsUI
 from UI.ButtonsUI import ButtonUI
+import time
 
 pygame.init()
 SCREEN = pygame.display.set_mode((1270, 720))
@@ -28,39 +30,36 @@ def get_font(size):  # Returns Press-Start-2P in the desired size
 
 
 def play():
-    TIME = 1000
+    t_end = time.time() + 120
     GAME_ACTIVE = True
 
     if GAME_ACTIVE:
         pygame.display.set_caption("Play")
 
-        while GAME_ACTIVE and TIME != 0:
+        while GAME_ACTIVE and t_end > time.time():
             PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
             SCREEN.fill("#003366")
-            display_while_run()
+            display_while_run(math.ceil(t_end - time.time()))
+
             # SCREEN.blit(BACKGROUD_PIC, (0, 0))
 
-            PLAY_BACK = ButtonUI(image=None, pos=(100, 680),
-                                 text_input="stop", font=get_font(30), base_color="red", hovering_color="white")
+            STOP_BUTTON = ButtonUI(image=None, pos=(100, 680),
+                                   text_input="stop", font=get_font(30), base_color="red", hovering_color="white")
 
-            PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-            PLAY_BACK.update(SCREEN)
+            STOP_BUTTON.changeColor(PLAY_MOUSE_POS)
+            STOP_BUTTON.update(SCREEN)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
+                    if STOP_BUTTON.checkForInput(PLAY_MOUSE_POS):
                         main_menu()
-
+            print(time.time())
             pygame.display.update()
-            TIME = TIME - 1
-            print(TIME)
-            if TIME == 0:
-                GAME_ACTIVE = False
-                GAME_FINISHED()
+        GAME_FINISHED()
 
 
 def GAME_FINISHED():
@@ -93,34 +92,6 @@ def GAME_FINISHED():
                     main_menu()
 
         pygame.display.update()
-
-
-# def options():
-#     pygame.display.set_caption("Options")
-#     while True:
-#         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-#
-#         SCREEN.fill("white")
-#
-#         OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
-#         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-#         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-#
-#         OPTIONS_BACK = ButtonUI(image=None, pos=(640, 460),
-#                                 text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
-#
-#         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-#         OPTIONS_BACK.update(SCREEN)
-#
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-#                     main_menu()
-#
-#         pygame.display.update()
 
 
 def main_menu():
@@ -200,14 +171,14 @@ def draw_agent(Graph: GraphAlgo):
         SCREEN.blit(SMALL_AGENT_SURF, (agent.pos[0], agent.pos[1]))
 
 
-def display_while_run():
+def display_while_run(Time):
     SCORE_TEXT = get_font(18).render("Score: ", True, "red")
     center_h = SCREEN.get_height() / 2
     center_w = SCREEN.get_width() / 2
     SCORE_RECT = SCORE_TEXT.get_rect(center=(center_w - 500, center_h - 340))
     SCREEN.blit(SCORE_TEXT, SCORE_RECT)
 
-    TIME_TEXT = get_font(18).render("Time Left: ", True, "red")
+    TIME_TEXT = get_font(18).render("Time Left: " + str(Time), True, "red")
     TIME_RECT = TIME_TEXT.get_rect(center=(center_w, center_h - 340))
     SCREEN.blit(TIME_TEXT, TIME_RECT)
 
