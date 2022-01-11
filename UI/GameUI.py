@@ -77,7 +77,14 @@ class GameUI:
                             self.client.stop()
                             self.main_menu()
                 pygame.display.update()
-                #self.game_builder.move_agent()
+                for agent in self.game_builder.GraphAlgo.get_agent().values():
+                    if agent.dest == -1:
+                        next_node = (agent.src - 1) % len(self.graph.Nodes)
+                        self.game_builder.Client.choose_next_edge(
+                            '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
+                        ttl = self.game_builder.Client.time_to_end()
+                        print(ttl, self.game_builder.Client.get_info())
+                self.game_builder.Client.move()
 
             self.client.stop()
             self.GAME_FINISHED()
