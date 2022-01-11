@@ -23,22 +23,22 @@ class GameUI:
         self.max_y = max(list(graph.Nodes.values()), key=lambda n: n.y).y
         self.game_builder = 0
 
-        self.BACKGROUD_PIC = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
-        self.BIG_POKEMON_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
-        self.SMALL_POKEMON_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu.png").convert_alpha()
-        self.BIG_AGENT_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\KantoashBIG.png").convert_alpha()
-        self.SMALL_AGENT_SURF = pygame.image.load(
-            "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
+        # self.BACKGROUD_PIC = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
+        # self.BIG_POKEMON_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachuBig.png").convert_alpha()
+        # self.SMALL_POKEMON_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\pikachu.png").convert_alpha()
+        # self.BIG_AGENT_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\KantoashBIG.png").convert_alpha()
+        # self.SMALL_AGENT_SURF = pygame.image.load(
+        #     "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\Kantoash.png").convert_alpha()
 
-        # self.BACKGROUD_PIC = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/menuBackGround.png")
-        # self.BIG_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachuBig.png")
-        # self.SMALL_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachu.png")
-        # self.BIG_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/KantoashBIG.png")
-        # self.SMALL_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/Kantoash.png")
+        self.BACKGROUD_PIC = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/menuBackGround.png")
+        self.BIG_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachuBig.png")
+        self.SMALL_POKEMON_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/pikachu.png")
+        self.BIG_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/KantoashBIG.png")
+        self.SMALL_AGENT_SURF = pygame.image.load("/Users/laraabu/PycharmProjects/Ex4_OOP/UI/pics/Kantoash.png")
 
         self.CLOCK = pygame.time.Clock()
 

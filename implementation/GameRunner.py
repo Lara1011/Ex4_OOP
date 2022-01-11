@@ -34,7 +34,6 @@ def main():
     game_UI = GameUI(graph, client)
     screen = game_UI.SCREEN
 
-    game_info = ""
     while client.is_running() == 'true':
         game_builder.load_all()
         graph = game_builder.get_graph()
