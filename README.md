@@ -40,4 +40,5 @@ We used a dummy algorithm, that was given to us, after a lot of failes(couldn't 
 In your cmd, write `java -jar Ex4_Server_v0.0.jar <case number>`
 then run your main class, `GameRunner.py`.
 
-![](pik.gif)
+![plot](https://github.com/Lara1011/Ex4_OOP/blob/c73138da084a56b1f5bee1ac37d8a374be8c55db/main.jpg)
+![plot](https://github.com/Lara1011/Ex4_OOP/blob/c73138da084a56b1f5bee1ac37d8a374be8c55db/play.jpg)
