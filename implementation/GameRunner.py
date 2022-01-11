@@ -41,7 +41,7 @@ def main():
         game_UI.set_graph(graph)
         game_builder.create_proportion_mapping()
         game_UI.set_game_builder(game_builder)
-        game_UI.play()
+        game_UI.main_menu()
         game_builder.move_agent()
         game_info = client.get_info()
         game_builder.get_game_info()
