@@ -28,4 +28,14 @@ Our goal was to catch as many pokemons as possible and to maximize the overall s
 We used classes from `https://github.com/Lara1011/Ex3_OOP.git`, in addition to:
 - __`Agent class` :__ Each agent has id, value, source, destination, speed, position.
 - __`Pokemon` :__ Each pokemon has value, type and position.
+- __`Game Builder` :__ Loading all info from client.
+- __`Game Runner` :__ Runs the game.
+- __`GameUI` :__ GUI.
 
+---
+### Algorithm:
+We used a dummy algorithm, that was given to us, after a lot of failes(couldn't make the agent move on graph) you can see in older commits.
+
+### How to run:
+In your cmd, write `java -jar Ex4_Server_v0.0.jar <case number>`
+then run your main class, `GameRunner.py`.
