@@ -39,3 +39,5 @@ We used a dummy algorithm, that was given to us, after a lot of failes(couldn't 
 ### How to run:
 In your cmd, write `java -jar Ex4_Server_v0.0.jar <case number>`
 then run your main class, `GameRunner.py`.
+
+![](pik.gif)
