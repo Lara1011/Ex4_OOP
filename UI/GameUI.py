@@ -21,6 +21,7 @@ class GameUI:
         self.min_y = min(list(graph.Nodes.values()), key=lambda n: n.y).y
         self.max_x = max(list(graph.Nodes.values()), key=lambda n: n.x).x
         self.max_y = max(list(graph.Nodes.values()), key=lambda n: n.y).y
+        self.game_builder = 0
 
         # self.BACKGROUD_PIC = pygame.image.load(
         #    "C:\\Users\\malak\\PycharmProjects\\Ex4_OOP\\UI\\pics\\menuBackGround.png")
@@ -76,6 +77,8 @@ class GameUI:
                             self.client.stop()
                             self.main_menu()
                 pygame.display.update()
+                self.game_builder.move_agent()
+
             self.client.stop()
             self.GAME_FINISHED()
 
@@ -155,14 +158,12 @@ class GameUI:
 
     def draw_node(self):
         for node in self.graph.Nodes.values():
-            print(node.getx)
             x = self.my_scale(node.getx(), x=True)
             y = self.my_scale(node.gety(), y=True)
             gfxdraw.circle(self.SCREEN, int(x), int(y), 15, (13, 45, 234))
             id_surf = self.get_font(10).render(str(node.id), True, "white")
             id_rect = id_surf.get_rect(center=(x, y))
             self.SCREEN.blit(id_surf, id_rect)
-            self.SCREEN.blit(self.BIG_POKEMON_SURF, (0, 0))
 
     def draw_edge(self):
         for edge in self.graph.Edges.values():
@@ -171,7 +172,7 @@ class GameUI:
             destX = self.my_scale(self.graph.Nodes[edge.getDest()].getx(), x=True)
             destY = self.my_scale(self.graph.Nodes[edge.getDest()].gety(), y=True)
             gfxdraw.line(self.SCREEN, int(srcX), int(srcY), int(destX), int(destY), (67, 228, 11))
-            # "#d7fcf4"
+            #"#d7fcf4"
             weight_surf = self.get_font(10).render(str(float("{0:.3f}".format(edge.getWeight()))), True, "white")
             weight_rect = weight_surf.get_rect(center=((srcX + destX) / 2, (srcY + destY) / 2))
             self.SCREEN.blit(weight_surf, weight_rect)
@@ -179,12 +180,16 @@ class GameUI:
     def draw_pokemon(self):
         for pokemon in self.graph.Pokemons.values():
             x, y, _ = pokemon.pos.split(',')
-            self.SCREEN.blit(self.SMALL_POKEMON_SURF, (float(x), float(y)))
+            x = self.my_scale(float(x), x=True)
+            y = self.my_scale(float(y), y=True)
+            self.SCREEN.blit(self.SMALL_POKEMON_SURF, (x, y))
 
     def draw_agent(self):
         for agent in self.graph.Agents.values():
             x, y, _ = agent.pos.split(',')
-            self.SCREEN.blit(self.SMALL_AGENT_SURF, (float(x), float(y)))
+            x = self.my_scale(float(x), x=True)
+            y = self.my_scale(float(y), y=True)
+            self.SCREEN.blit(self.SMALL_AGENT_SURF, (x, y))
 
     def main_display_while_playing(self, Time):
         SCORE_TEXT = self.get_font(18).render("Score: ", True, "red")
@@ -223,3 +228,6 @@ class GameUI:
             return self.scale(data, 50, self.SCREEN.get_width() - 50, self.min_x, self.max_x)
         if y:
             return self.scale(data, 50, self.SCREEN.get_height() - 50, self.min_y, self.max_y)
+
+    def set_game_builder(self, gameBuilder):
+        self.game_builder = gameBuilder
