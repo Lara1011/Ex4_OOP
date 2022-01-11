@@ -77,7 +77,7 @@ class GameUI:
                             self.client.stop()
                             self.main_menu()
                 pygame.display.update()
-                self.game_builder.move_agent()
+                #self.game_builder.move_agent()
 
             self.client.stop()
             self.GAME_FINISHED()
