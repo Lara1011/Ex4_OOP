@@ -53,6 +53,8 @@ class GameUI:
             pygame.display.set_caption("Play")
 
             while GAME_ACTIVE and t_end > time.time():
+                self.game_builder.load_all()
+                self.graph = self.game_builder.get_graph()
                 PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
                 self.SCREEN.fill("#003366")
